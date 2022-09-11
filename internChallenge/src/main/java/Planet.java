@@ -1,15 +1,14 @@
-public class Planet {
+public class Planet{
     private String name;
     private final int x;
     private final int y;
     private Probe[][] area;
-    private String name;
 
-    public Planet(int x, int y, Probe[][] area, String name) {
+    public Planet(String name, int x, int y, Planet planet) {
+        this.name = name;
         this.x = x;
         this.y = y;
-        this.area = area;
-        this.name = name;
+        this.area = new Probe[y][x];
     }
 
     public String getName() {
