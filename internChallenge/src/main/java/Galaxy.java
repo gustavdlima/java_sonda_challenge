@@ -30,6 +30,8 @@ public class Galaxy {
         int planetX = s.nextInt();
         System.out.print("planet y axis (only integers): ");
         int planetY = s.nextInt();
-        planetList.add(new Planet(planetName, planetX, planetY));
+        Planet planet = new Planet(planetName, planetX, planetY);
+        planetList.add(planet);
+        return planet;
     }
 }

@@ -13,5 +13,23 @@ public class Probe {
         this.direction = direction;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public String getCommands() {
+        return commands;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }
