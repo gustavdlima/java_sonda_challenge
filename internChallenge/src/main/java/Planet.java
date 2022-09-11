@@ -27,4 +27,16 @@ public class Planet{
     public Probe[][] getArea() {
         return area;
     }
+
+    public void setArea(Probe[][] area) {
+        this.area = area;
+    }
+
+    public Position transformCartesianPlaneToMatrix(Position position, int planetY) {
+        System.out.print("old  " + position);
+        position.setY((planetY - position.getY()));
+        position.setX(position.getX() - 1);
+        System.out.println(" new = " + position);
+        return position;
+    }
 }

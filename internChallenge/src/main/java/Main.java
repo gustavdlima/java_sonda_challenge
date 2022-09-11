@@ -38,15 +38,21 @@ public class Main {
             else
                 actualProbe = Probe.takeProbeInput(inputProbe, probeList);
 
-//            System.out.println("to run the probe commands type -startprobe.");
-//            String inputProbeStart = s.next();
-//            if (inputProbeStart.equals("-startprobe")) {
-//                actualProbe.executeCommand(actualProbe);
-//                cli.printProbeLocationAndPosition(actualProbe);
-//            }
-//            break;
+            System.out.println("to run the probe commands type -startprobe.");
+            String inputProbeStart = s.next();
+            if (inputProbeStart.equals("-startprobe")) {
+                actualProbe.executeCommand(actualProbe);
+                cli.printProbeLocationAndPosition(actualProbe);
+            }
+            break;
         }
     }
 
-
+    public Position transformCartesianPlaneToMatrix(Position position, int planetY) {
+        System.out.print("old  " + position);
+        position.setY((planetY - position.getY()));
+        position.setX(position.getX() - 1);
+        System.out.println(" new = " + position);
+        return position;
+    }
 }
