@@ -85,11 +85,14 @@ public class Probe {
         return actualProbe;
     }
 
-    public void placeProbe(Position position) {
-        Probe temp = planet.getArea()[position.getY()][position.getX()];
-
-        setPosition(position);
+    public void placeProbe(Probe probe) {
+        probe.position = position;
+        probe.direction = direction;
+        Probe[][] areaTemp = planet.getArea();
+        areaTemp[position.getX()][position.getY()] = probe;
+        planet.setArea(areaTemp);
     }
+
     public Probe removeProbe(Position position) {
         Probe probeTemp = haveAProbe(position);
         if (probeTemp == null) {
@@ -109,18 +112,18 @@ public class Probe {
             return planet.getArea()[position.getY()][position.getX()];
     }
 
-    public void executeCommand() {
+    public void executeCommand(Probe probe) {
         String[] command;
         command = getCommands().split("");
         setPosition(planet.transformCartesianPlaneToMatrix(position, planet.getY()));
-        placeProbe(position);
+        placeProbe(probe);
         for (int i = 0; i < commands.length(); i++) {
             if (command[i].equals("R"))
                 setDirection(moveRight());
             if (command[i].equals("L"))
                 setDirection(moveLeft());
             if (command[i].equals("M"))
-                moveProbe();
+                moveProbe(probe);
         }
     }
 
@@ -148,42 +151,36 @@ public class Probe {
         return null;
     }
 
-//    public void moveProbe() {
-//        System.out.println("Antes = " + getPosition() + " Direcao = " + getDirection());
-//        Position oldPosition = getPosition();
-//        removeProbe(oldPosition);
-//        if (getDirection() == Direction.N) {
-//            if (getPosition().getY() == 0)
-//                setPosition((planet.getY() - 1), getPosition().getX());
-//            else
-//                setPosition((getPosition().getY() - 1), getPosition().getX());
-//        }
-//        if (getDirection() == Direction.E) {
-//            if (getPosition().getX() == (planet.getX() - 1))
-//                setPosition(getPosition().getY(), 0);
-//            else
-//                setPosition(getPosition().getY(), getPosition().getX() + 1);
-//        }
-//        if (getDirection() == Direction.S) {
-////            if (planet.getY() > (y + 1))
-////                setPosition(planet.transformCartesianPlaneToMatrix(y, planet.getY()), x);
-//            if (getPosition().getY() == (planet.getY()))
-//                setPosition(0, getPosition().getX());
-//            else {
-//                if (getPosition().getY() == (planet.getY() - 1) || getPosition().getX() == (planet.getX() - 1))
-//                    setPosition(getPosition().getY(), getPosition().getX());
-//                else
-//                    setPosition(getPosition().getY() + 1, getPosition().getX());
-//            }
-//        }
-//        if (getDirection() == Direction.W) {
-//            if (getPosition().getX() == 0)
-//                setPosition(getPosition().getY(), planet.getX() - 1);
-//            else {
-//                setPosition(getPosition().getY(), getPosition().getX() - 1);
-//            }
-//        }
-//        System.out.println("Depois = " + position + " Direcao = " + getDirection());
-//        placeProbe(getPosition());
-//    }
+    public void moveProbe(Probe probe) {
+        System.out.println("Antes = " + getPosition() + " Direcao = " + getDirection());
+        Position oldPosition = getPosition();
+        removeProbe(oldPosition);
+        if (getDirection() == Direction.N) {
+            if (getPosition().getY() == 0)
+                setPosition(getPosition().getX(), (planet.getY() - 1));
+            else
+                setPosition(getPosition().getX(), (getPosition().getY() - 1));
+        }
+        if (getDirection() == Direction.E) {
+            if (getPosition().getX() == (planet.getX() - 1))
+                setPosition(0, getPosition().getY());
+            else
+                setPosition((getPosition().getX() + 1), getPosition().getY());
+        }
+        if (getDirection() == Direction.S) {
+            if (getPosition().getY() == (planet.getY() - 1))
+                setPosition(getPosition().getX(), 0);
+            else
+                setPosition(getPosition().getX(), (getPosition().getY() + 1));
+        }
+        if (getDirection() == Direction.W) {
+            if (getPosition().getX() == 0)
+                setPosition((planet.getX() - 1), getPosition().getY());
+            else {
+                setPosition((getPosition().getX() - 1), getPosition().getY());
+            }
+        }
+        System.out.println("Depois = " + position + " Direcao = " + getDirection());
+        placeProbe(probe);
+    }
 }

@@ -33,8 +33,10 @@ public class Planet{
     }
 
     public Position transformCartesianPlaneToMatrix(Position position, int planetY) {
+        System.out.print("old  " + position);
         position.setY((planetY - position.getY()));
         position.setX(position.getX() - 1);
+        System.out.println(" new = " + position);
         return position;
     }
 }
