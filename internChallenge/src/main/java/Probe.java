@@ -75,6 +75,12 @@ public class Probe {
         }
     }
 
+    public void printProbeLocationAndPosition() {
+        System.out.print("The probe " + getName() + " points " + getDirection().toString() + " ");
+        System.out.print( "and is located on the x=" + (getPosition().getX()) + " and y=" + (getPosition().getY()) + " ");
+        System.out.println("axis of planet " + getPlanet().getName() + "!");
+    }
+
     public static Probe takeProbeInput(String name, List<Probe> probeList) {
         Probe actualProbe = null;
         for (int i = 0; i < probeList.size(); i++) {
@@ -106,7 +112,7 @@ public class Probe {
     }
 
     public Probe haveAProbe(Position position) {
-        if (haveAProbe(position) == null)
+        if (planet.getArea()[position.getX()][position.getY()] == null)
             return null;
         else
             return planet.getArea()[position.getY()][position.getX()];
@@ -125,6 +131,7 @@ public class Probe {
             if (command[i].equals("M"))
                 moveProbe(probe);
         }
+        setPosition(planet.transformMatrixToCartesianPlane(position, planet.getY()));
     }
 
     private Direction moveRight() {

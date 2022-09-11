@@ -10,6 +10,11 @@ public class Main {
         List<Probe> probeList = new ArrayList<>();
         SolarSystem solarSystem = new SolarSystem("solarSystem", new ArrayList<>());
 
+        Probe sonda1 = new Probe("sonda1", actualPlanet, new Position(1,2), "LMLMLMLMM", Direction.N);
+        probeList.add(sonda1);
+        Probe sonda2 = new Probe("sonda2", actualPlanet, new Position(3,3), "MMRMMRMRRML", Direction.E);
+        probeList.add(sonda2);
+
         while (true) {
             System.out.println();
             System.out.println("choose the name of the planet you want or type -newplanet to create one.");
@@ -19,11 +24,6 @@ public class Main {
                 actualPlanet = solarSystem.newPlanet();
             else
                 actualPlanet = solarSystem.takePlanetInput(inputPlanetName);
-
-            Probe sonda1 = new Probe("sonda1", actualPlanet, new Position(1,2), "LMLMLMLMM", Direction.N);
-            probeList.add(sonda1);
-            Probe sonda2 = new Probe("sonda2", actualPlanet, new Position(3,3), "MMRMMRMRRML", Direction.E);
-            probeList.add(sonda2);
 
             System.out.println();
             System.out.println("Choose the name of the probe you want or -newprobe to create a probe.");
@@ -38,13 +38,14 @@ public class Main {
             else
                 actualProbe = Probe.takeProbeInput(inputProbe, probeList);
 
+            System.out.println();
             System.out.println("to run the probe commands type -startprobe.");
             String inputProbeStart = s.next();
             if (inputProbeStart.equals("-startprobe")) {
                 actualProbe.executeCommand(actualProbe);
-                cli.printProbeLocationAndPosition(actualProbe);
+                actualProbe.printProbeLocationAndPosition();
             }
-            break;
+//            break;
         }
     }
 

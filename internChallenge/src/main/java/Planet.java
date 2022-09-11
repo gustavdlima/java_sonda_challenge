@@ -39,4 +39,15 @@ public class Planet{
         System.out.println(" new = " + position);
         return position;
     }
+
+    public Position transformMatrixToCartesianPlane(Position position, int planetY) {
+        System.out.print("old  " + position);
+        if (position.getY() == 0 )
+            position.setY(planetY);
+        else
+            position.setY(planetY - position.getY());
+        position.setX(position.getX() + 1);
+        System.out.println(" new = " + position);
+        return position;
+    }
 }
