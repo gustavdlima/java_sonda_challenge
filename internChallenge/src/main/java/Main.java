@@ -1,11 +1,13 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         Planet actualPlanet;
-
+        Probe actualProbe;
+        List<Probe> probeList = new ArrayList<>();
         SolarSystem solarSystem = new SolarSystem("solarSystem", new ArrayList<>());
 
         while (true) {
@@ -16,15 +18,23 @@ public class Main {
                 actualPlanet = solarSystem.newPlanet();
             else
                 actualPlanet = solarSystem.takePlanetInput(inputPlanetName);
+
+            Probe sonda1 = new Probe("sonda1", actualPlanet, new Position(1,2), "LMLMLMLMM", Direction.N);
+            probeList.add(sonda1);
+            Probe sonda2 = new Probe("sonda2", actualPlanet, new Position(3,3), "MMRMMRMRRML", Direction.E);
+            probeList.add(sonda2);
+
             System.out.println("choose the name of the probe you want or -newprobe to create a probe.");
-            Ui.printAllProbes(cli.probeList);
+            Probe.printAllProbes(probeList);
             String inputProbe = s.next();
             if (inputProbe.equals("-newprobe")) {
-                actualProbe = cli.newProbe(actualPlanet);
+                actualProbe = Probe.newProbe(actualPlanet, probeList);
+                System.out.println("enter the command to move the probe (R and L to choose direction and M to move. Ex: LMRMLL):");
+                actualProbe.setCommands(s.next());
             }
-            else if (inputProbe.equals("-probes")) {
-                actualProbe = cli.takeProbeInput(inputProbe);
-            }
+            else
+                actualProbe = Probe.takeProbeInput(inputProbe, probeList);
+            
             System.out.println("enter the command to move the probe (R and L to choose direction and M to move. Ex: LMRMLL):");
             actualProbe.setCommands(s.next());
             System.out.println("to run the probe commands type -startprobe.");
@@ -36,4 +46,6 @@ public class Main {
             break;
         }
     }
+
+
 }
