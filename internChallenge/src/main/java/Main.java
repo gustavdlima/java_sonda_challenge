@@ -4,19 +4,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
+        Planet actualPlanet;
 
         SolarSystem solarSystem = new SolarSystem("solarSystem", new ArrayList<>());
 
         while (true) {
             System.out.println("choose the name of the planet you want or type -newplanet to create one.");
-            Galaxy.printPlanets(solarSystem.getPlanetList());
+            solarSystem.printPlanets();
             String inputPlanetName = s.next();
-            if (inputPlanetName.equals("-newplanet")) {
-                actualPlanet = cli.newPlanet();
-            }
-            else {
-                actualPlanet = cli.takePlanetInput(inputPlanetName);
-            }
+            if (inputPlanetName.equals("-newplanet"))
+                actualPlanet = solarSystem.newPlanet();
+            else
+                actualPlanet = solarSystem.takePlanetInput(inputPlanetName);
             System.out.println("choose the name of the probe you want or -newprobe to create a probe.");
             Ui.printAllProbes(cli.probeList);
             String inputProbe = s.next();

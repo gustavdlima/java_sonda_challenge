@@ -17,15 +17,13 @@ public class Galaxy {
     public String getName() {
         return name;
     }
-
     protected List<Planet> getPlanetList() {
         return planetList;
     }
-
     protected void addPlanet(Planet planet) {
         this.planetList.add(planet);
     }
-    protected void newPlanet() {
+    protected Planet newPlanet() {
         System.out.print("planet name: ");
         String planetName = s.next();
         System.out.print("planet x axis (only integers): ");
