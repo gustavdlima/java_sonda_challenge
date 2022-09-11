@@ -4,13 +4,13 @@ import java.util.Scanner;
 public class SolarSystem extends Galaxy{
     public SolarSystem(String name, List<Planet> planetList) {
         super(name, planetList);
-        newPlanet("Mars", 5, 5);
-        newPlanet("Earth", 10, 10);
+        newPlanet("mars", 5, 5);
+        newPlanet("earth", 10, 10);
     }
 
     public void printPlanets() {
         System.out.println();
-        System.out.println("Solar system planets: ");
+        System.out.println("solar system planets: ");
         for (int i = 0; i < planetList.size(); i++)
             System.out.println("- " + planetList.get(i).getName() + " (" + (planetList.get(i).getX()) + "x" + (planetList.get(i).getY()) + ")" + ";");
     }

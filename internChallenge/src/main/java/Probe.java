@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Probe {
-    Scanner s;
+    static Scanner s;
     String      name;
     Planet      planet;
     Position    position;
@@ -58,6 +58,7 @@ public class Probe {
     }
 
     public static void printAllProbes(List<Probe> probeList) {
+        System.out.println();
         for (int i = 0; i < probeList.size(); i++) {
             System.out.println("- " + probeList.get(i).getName() + ";");
         }
@@ -73,9 +74,9 @@ public class Probe {
         return actualProbe;
     }
 
-    public void placeProbe(Probe probe, Position position) {
-        Probe temp = planet.getArea()[position.getY()][position.getX()];
-
-        setPosition(position);
-    }
+//    public void placeProbe(Probe probe, Position position) {
+//        Probe temp = planet.getArea()[position.getY()][position.getX()];
+//
+//        setPosition(position);
+//    }
 }
