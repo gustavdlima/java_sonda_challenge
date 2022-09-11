@@ -12,4 +12,6 @@ public class Probe {
         this.commands = commands;
         this.direction = direction;
     }
+
+
 }

@@ -4,11 +4,12 @@ public class Planet{
     private final int y;
     private Probe[][] area;
 
-    public Planet(String name, int x, int y, Planet planet) {
+    public Planet(String name, int x, int y) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.area = new Probe[y][x];
+
     }
 
     public String getName() {
