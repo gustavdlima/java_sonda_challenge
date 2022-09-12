@@ -3,11 +3,11 @@ import java.util.Scanner;
 
 public class Probe {
     static Scanner s;
-    String      name;
-    Planet      planet;
-    Position    position;
-    String      commands;
-    Direction   direction;
+    private String      name;
+    private Planet      planet;
+    private Position    position;
+    private String      commands;
+    private Direction   direction;
 
     public Probe(String name, Planet planet, Position position, String commands, Direction direction) {
         this.name = name;
@@ -55,14 +55,26 @@ public class Probe {
 
     public static Probe newProbe(Planet actualPlanet, List<Probe> probeList) {
         Probe temp;
+        System.out.println();
         System.out.println("probe name:");
         String inputProbeName = s.next();
         System.out.println("probe landing position x (only integers):");
         int inputProbeX = s.nextInt();
+        if (inputProbeX > actualPlanet.getX())
+        {
+            System.out.println("position X larger than possible (máx: " + actualPlanet.getX() + "), try again.");
+            newProbe(actualPlanet, probeList);
+        }
         System.out.println("probe landing position y (only integers:");
         int inputProbeY = s.nextInt();
+        if (inputProbeY > actualPlanet.getY())
+        {
+            System.out.println("position Y larger than possible (máx: " + actualPlanet.getY() + "), try again.");
+            newProbe(actualPlanet, probeList);
+        }
         System.out.println("probe landing direction N, E, S and W (wind rose)");
         String inputProbeDirection = s.next();
+
         temp = new Probe(inputProbeName, actualPlanet, new Position(inputProbeX, inputProbeY), null, Direction.valueOf(inputProbeDirection));
         probeList.add(temp);
         return temp;

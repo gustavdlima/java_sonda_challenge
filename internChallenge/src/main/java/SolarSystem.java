@@ -24,7 +24,7 @@ public class SolarSystem extends Galaxy{
         return "SolarSystem";
     }
 
-    public Planet takePlanetInput(String name) {
+    public Planet getPlanet(String name) {
         Planet actualPlanet = null;
         for (int i = 0; i < planetList.size(); i++) {
             if (planetList.get(i).getName().equals(name)) {
@@ -33,4 +33,6 @@ public class SolarSystem extends Galaxy{
         }
         return actualPlanet;
     }
+
+
 }

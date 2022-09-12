@@ -10,9 +10,9 @@ public class Main {
         List<Probe> probeList = new ArrayList<>();
         SolarSystem solarSystem = new SolarSystem("solarSystem", new ArrayList<>());
 
-        Probe sonda1 = new Probe("sonda1", actualPlanet, new Position(1,2), "LMLMLMLMM", Direction.N);
+        Probe sonda1 = new Probe("sonda1", solarSystem.getPlanet("mars"), new Position(1,2), "LMLMLMLMM", Direction.N);
         probeList.add(sonda1);
-        Probe sonda2 = new Probe("sonda2", actualPlanet, new Position(3,3), "MMRMMRMRRML", Direction.E);
+        Probe sonda2 = new Probe("sonda2", solarSystem.getPlanet("earth"), new Position(3,3), "MMRMMRMRRML", Direction.E);
         probeList.add(sonda2);
 
         while (true) {
@@ -23,7 +23,7 @@ public class Main {
             if (inputPlanetName.equals("-newplanet"))
                 actualPlanet = solarSystem.newPlanet();
             else
-                actualPlanet = solarSystem.takePlanetInput(inputPlanetName);
+                actualPlanet = solarSystem.getPlanet(inputPlanetName);
 
             System.out.println();
             System.out.println("Choose the name of the probe you want or -newprobe to create a probe.");
@@ -49,11 +49,4 @@ public class Main {
         }
     }
 
-    public Position transformCartesianPlaneToMatrix(Position position, int planetY) {
-        System.out.print("old  " + position);
-        position.setY((planetY - position.getY()));
-        position.setX(position.getX() - 1);
-        System.out.println(" new = " + position);
-        return position;
-    }
 }
