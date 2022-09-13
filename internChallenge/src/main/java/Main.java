@@ -35,13 +35,16 @@ public class Main {
         System.out.println("               Create a new probe");
         System.out.print("  -listprobes");
         System.out.println("             Show all available probes");
-        System.out.print("  -executeprobe");
-        System.out.println("           Start the probe");
+        System.out.print("  -startprobe");
+        System.out.println("             Start the probe");
         System.out.print("  -newprobecommand");
         System.out.println("        Gives a new command to the selected probe");
+        System.out.print("  -info");
+        System.out.println("                   Shows the information of the selected probe and planet");
+        System.out.print("  -exit");
+        System.out.println("                   Exit program");
+
         System.out.println();
-//        System.out.print("  -planetinfo");
-//        System.out.print("  -probeinfo");
 
         while (true) {
             String input = s.next();
@@ -60,7 +63,7 @@ public class Main {
             }
             if (input.equals("-newprobe")) {
                 if (actualPlanet == null) {
-                    System.out.println("before creating a new probe you need to choose a planet!");
+                    System.out.println("before creating a new probe you must to choose a planet!");
                     continue ;
                 }
                 actualProbe = Probe.newProbe(actualPlanet);
@@ -77,9 +80,9 @@ public class Main {
                 actualPlanet = actualProbe.getPlanet();
                 continue ;
             }
-            if (input.equals("-executeProbe")) {
+            if (input.equals("-startprobe")) {
                 if (actualProbe == null) {
-                    System.out.println("before start a probe you need choose a probe!");
+                    System.out.println("before start a probe you must choose a probe!");
                     continue ;
                 }
                 actualProbe.executeCommand(actualProbe);
@@ -87,7 +90,7 @@ public class Main {
             }
             if (input.equals("-newprobecommand")) {
                 if (actualProbe == null) {
-                    System.out.println("before execute a command you need choose a probe!");
+                    System.out.println("before execute a command you must choose a probe!");
                     continue ;
                 }
                 input = s.next();
@@ -110,6 +113,23 @@ public class Main {
                 System.out.println("        Gives a new command to the selected probe");
                 System.out.println();
             }
+            if (input.equals("-info")){
+                if (actualProbe == null) {
+                    System.out.println("before knowing the information you must choose a probe!");
+                    continue ;
+                }
+                System.out.println("[probe]");
+                System.out.println(actualProbe.getName() + " [" +actualProbe.getPosition() + "] facing " + actualProbe.getDirection() + " with the command: " + actualProbe.getCommands());
+                if (actualPlanet == null) {
+                    System.out.println("before knowing the information you must choose a planet!");
+                    continue ;
+                }
+                System.out.println("[planet]");
+                System.out.println(actualPlanet.getName() + " [" + actualPlanet.getX() + " ," + actualPlanet.getY() + "]");
+
+            }
+            if (input.equals("-exit"))
+                break ;
         }
     }
 

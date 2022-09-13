@@ -9,12 +9,12 @@ public class Planet{
         this.x = x;
         this.y = y;
         this.area = new Probe[y][x];
-
     }
 
     public String getName() {
         return name;
     }
+
 
     public int getX() {
         return x;
