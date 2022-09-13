@@ -17,6 +17,15 @@ public class Galaxy {
     public String getName() {
         return name;
     }
+    public Planet getPlanet(String name) {
+        Planet actualPlanet = null;
+        for (int i = 0; i < planetList.size(); i++) {
+            if (planetList.get(i).getName().equals(name)) {
+                actualPlanet = planetList.get(i);
+            }
+        }
+        return actualPlanet;
+    }
     protected List<Planet> getPlanetList() {
         return planetList;
     }
@@ -34,4 +43,5 @@ public class Galaxy {
         planetList.add(planet);
         return planet;
     }
+
 }

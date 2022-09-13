@@ -33,21 +33,24 @@ public class Planet{
     }
 
     public Position transformCartesianPlaneToMatrix(Position position, int planetY) {
-        System.out.print("old  " + position);
         position.setY((planetY - position.getY()));
         position.setX(position.getX() - 1);
-        System.out.println(" new = " + position);
         return position;
     }
 
     public Position transformMatrixToCartesianPlane(Position position, int planetY) {
-        System.out.print("old  " + position);
         if (position.getY() == 0 )
             position.setY(planetY);
         else
             position.setY(planetY - position.getY());
         position.setX(position.getX() + 1);
-        System.out.println(" new = " + position);
         return position;
+    }
+
+    public Probe positionAreaIsFree (Probe probe, Position position) {
+        if (area[position.getY()][position.getX()] == probe || area[position.getY()][position.getX()] == null)
+            return null;
+        else
+            return area[position.getY()][position.getX()];
     }
 }
