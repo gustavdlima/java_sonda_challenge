@@ -4,131 +4,82 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Probe actualProbe = null;
-        Planet actualPlanet = null;
-        Scanner s = new Scanner(System.in);
-        List<Probe> probeList = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        CommandLineInterface CLI = new CommandLineInterface();
         MilkWay milkWay = new MilkWay("milkWay", new ArrayList<>());
+        Planet currentPlanet = null;
+        Probe currentProbe = null;
+        List<Probe> probes = new ArrayList<>();
 
-        Probe sonda1 = new Probe("sonda1", milkWay.getPlanet("mars"), new Position(1,2), "LMLMLMLMM", Direction.N);
-        probeList.add(sonda1);
-        Probe sonda2 = new Probe("sonda2", milkWay.getPlanet("earth"), new Position(3,3), "MMRMMRMRRML", Direction.E);
-        probeList.add(sonda2);
-
-        System.out.println();
-        System.out.println("probe controller");
-        System.out.println();
-        System.out.println("[alfa version]");
-        System.out.println("https://github.com/gustavdlima/java_sonda_challenge.git");
-        System.out.println();
-        System.out.println("Usage:");
-        System.out.println("-command");
-        System.out.println();
-        System.out.println("Available Commands:");
-        System.out.print("  -commands");
-        System.out.println("               Show all commands");
-        System.out.print("  -newplanet");
-        System.out.println("              Create a new planet");
-        System.out.print("  -listplanets");
-        System.out.println("            Show all available planets");
-        System.out.print("  -newprobe");
-        System.out.println("               Create a new probe");
-        System.out.print("  -listprobes");
-        System.out.println("             Show all available probes");
-        System.out.print("  -startprobe");
-        System.out.println("             Start the probe");
-        System.out.print("  -newprobecommand");
-        System.out.println("        Gives a new command to the selected probe");
-        System.out.print("  -info");
-        System.out.println("                   Shows the information of the selected probe and planet");
-        System.out.print("  -exit");
-        System.out.println("                   Exit program");
-
-        System.out.println();
-
+        CLI.systemMenu();
         while (true) {
-            String input = s.next();
-            if (input.equals("-newplanet")) {
-                actualPlanet = milkWay.newPlanet();
+            String option = sc.next();
+            if (option.equals("-newplanet")) {
+                milkWay.newPlanet();
                 System.out.println();
-                continue ;
+                continue;
             }
-            if (input.equals("-listplanets")) {
+            if (option.equals("-listplanets")) {
                 milkWay.printPlanets();
                 System.out.println();
                 System.out.println("Choose the planet (Ex: mars): ");
-                input = s.next();
-                actualPlanet = milkWay.getPlanet(input);
+                option = sc.next();
+                currentPlanet = milkWay.getPlanet(option);
                 continue ;
             }
-            if (input.equals("-newprobe")) {
-                if (actualPlanet == null) {
-                    System.out.println("before creating a new probe you must to choose a planet!");
-                    continue ;
-                }
-                actualProbe = Probe.newProbe(actualPlanet);
+            if (option.equals("-newprobe")) {
+                currentProbe = CLI.createNewProbe();
                 System.out.println("enter the command to move the probe (to change the direction 90° use R = right and L = left and M to move. Ex: LMRMLL):");
-                actualProbe.setCommands(s.next());
-                probeList.add(actualProbe);
+                String commands = sc.next();
+                currentProbe.setCommands(commands);
+                probes.add(currentProbe);
                 continue ;
             }
-            if (input.equals("-listprobes")) {
-                Probe.printAllProbes(probeList);
+            if (option.equals("-listprobes")) {
+                CommandLineInterface.printAllProbes(probes);
                 System.out.println("Choose the probe (Ex: sonda1): ");
-                input = s.next();
-                actualProbe = Probe.takeSelectedProbe(input, probeList);
-                actualPlanet = actualProbe.getPlanet();
+                String probeName = sc.next();
+                currentProbe = Probe.takeSelectedProbe(probeName, probes);
+                currentPlanet = currentProbe.getPlanet();
                 continue ;
             }
-            if (input.equals("-startprobe")) {
-                if (actualProbe == null) {
+            if (option.equals("-startprobe")) {
+                if (currentProbe == null) {
                     System.out.println("before start a probe you must choose a probe!");
                     continue ;
                 }
-                actualProbe.executeCommand(actualProbe);
+                currentProbe.moveProbe(currentProbe.getCommands(), currentProbe);
+                System.out.println("probe started!");
                 continue ;
             }
-            if (input.equals("-newprobecommand")) {
-                if (actualProbe == null) {
+            if (option.equals("-newprobecommand")) {
+                if (currentProbe == null) {
                     System.out.println("before execute a command you must choose a probe!");
                     continue ;
                 }
-                input = s.next();
-                actualProbe.setCommands(input);
+                String commands = sc.next();
+                System.out.println("new commands added");
+                currentProbe.setCommands(commands);
             }
-            if (input.equals("-commands")) {
-                System.out.print("  -commands");
-                System.out.println("              Show all commands");
-                System.out.print("  -newplanet");
-                System.out.println("              Create a new planet");
-                System.out.print("  -listplanets");
-                System.out.println("            Show all available planets");
-                System.out.print("  -newprobe");
-                System.out.println("               Create a new probe");
-                System.out.print("  -listprobes");
-                System.out.println("             Show all available probes");
-                System.out.print("  -executeprobe");
-                System.out.println("           Start the probe");
-                System.out.print("  -newprobecommand");
-                System.out.println("        Gives a new command to the selected probe");
-                System.out.println();
+            if (option.equals("-commands")) {
+                CLI.availableCommands();
             }
-            if (input.equals("-info")){
-                if (actualProbe == null) {
+            if (option.equals("-info")){
+                if (currentProbe == null) {
                     System.out.println("before knowing the information you must choose a probe!");
                     continue ;
                 }
                 System.out.println("[probe]");
-                System.out.println(actualProbe.getName() + " [" +actualProbe.getPosition() + "] facing " + actualProbe.getDirection() + " with the command: " + actualProbe.getCommands());
-                if (actualPlanet == null) {
+                System.out.println(currentProbe.getName() + " [" + currentProbe.getPosition() + "] facing " + currentProbe.getDirection() + " with the command: " + currentProbe.getCommands());
+                if (currentPlanet == null) {
                     System.out.println("before knowing the information you must choose a planet!");
                     continue ;
                 }
                 System.out.println("[planet]");
-                System.out.println(actualPlanet.getName() + " [" + actualPlanet.getX() + " ," + actualPlanet.getY() + "]");
+                System.out.println(currentPlanet.getName() + " [" + currentPlanet.getX() + " ," + currentPlanet.getY() + "]");
 
             }
-            if (input.equals("-exit"))
+            if (option.equals("-exit"))
                 break ;
         }
     }

@@ -42,7 +42,7 @@ public class Probe {
         this.planet = planet;
     }
 
-    private void setPosition(Position position) {
+    public void setPosition(Position position) {
     }
 
     public void setPosition(int x, int y) {
@@ -57,42 +57,116 @@ public class Probe {
         this.direction = direction;
     }
 
-    public static Probe newProbe(Planet actualPlanet) {
-        Probe temp;
-        System.out.println();
-        System.out.println("probe name:");
-        String inputProbeName = s.next();
-        System.out.println("probe landing position x (only integers):");
-        int inputProbeX = s.nextInt();
-        if (inputProbeX > actualPlanet.getX())
-        {
-            System.out.println("position X larger than possible (máx: " + actualPlanet.getX() + "), try again.");
-            newProbe(actualPlanet);
+    public void moveProbe(String command, Probe probe) {
+        char[] commands = command.toCharArray();
+        probe.setPosition(probe.getPlanet().transformCartesianPlaneToMatrix(probe.getPosition(), probe.getPlanet().getY()));
+        for (int i = 0; i < commands.length; i++) {
+            if (commands[i] == ('R'))
+                probe.setDirection(moveRight(probe.getDirection()));
+            if (commands[i] == ('L'))
+                probe.setDirection(moveLeft(probe.getDirection()));
+            if (commands[i] == ('M') && checkCollision(probe)) {
+                moveProbeForward(probe);
+            }
         }
-        System.out.println("probe landing position y (only integers:");
-        int inputProbeY = s.nextInt();
-        if (inputProbeY > actualPlanet.getY())
-        {
-            System.out.println("position Y larger than possible (máx: " + actualPlanet.getY() + "), try again.");
-            newProbe(actualPlanet);
-        }
-        System.out.println("probe landing direction N, E, S and W (wind rose)");
-        String inputProbeDirection = s.next();
-        temp = new Probe(inputProbeName, actualPlanet, new Position(inputProbeX, inputProbeY), null, Direction.valueOf(inputProbeDirection));
-        return temp;
+        probe.setPosition(probe.getPlanet().transformMatrixToCartesianPlane(probe.getPosition(), probe.getPlanet().getY()));
     }
 
-    public static void printAllProbes(List<Probe> probeList) {
-        System.out.println();
-        for (int i = 0; i < probeList.size(); i++) {
-            System.out.println("- " + probeList.get(i).getName() + ";");
-        }
+    private Direction moveRight(Direction direction) {
+        if (direction == Direction.N)
+            return Direction.E;
+        if (direction == Direction.E)
+            return Direction.S;
+        if (direction == Direction.S)
+            return Direction.W;
+        if (direction == Direction.W)
+            return Direction.N;
+        return null;
     }
 
-    public void printProbeLocationAndPosition() {
-        System.out.print("The probe " + getName() + " points " + getDirection().toString() + " ");
-        System.out.print( "and is located on the x=" + (getPosition().getX()) + " and y=" + (getPosition().getY()) + " ");
-        System.out.println("axis of planet " + getPlanet().getName() + "!");
+    private Direction moveLeft(Direction direction) {
+        if (direction == Direction.N)
+            return Direction.W;
+        if (direction == Direction.E)
+            return Direction.N;
+        if (direction == Direction.S)
+            return Direction.E;
+        if (direction == Direction.W)
+            return Direction.S;
+        return null;
+    }
+
+    private boolean checkCollision(Probe probe) {
+        Probe[][] area = probe.getPlanet().getArea();
+        int probeY = probe.getPosition().getY();
+        int probeX = probe.getPosition().getX();
+        int planetY = probe.getPlanet().getY();
+        int planetX = probe.getPlanet().getX();
+        Direction direction = probe.getDirection();
+
+        if (probeY == 0) probeY = planetY;
+        if (direction.equals(Direction.N) && area[probeY - 1][probeX] != null) {
+            System.out.println("Impossible to move to area " + probeX + " " + (probeY - 1));
+            return false;
+        }
+        probeY = probe.getPosition().getY();
+
+        if (probeY == planetY - 1) probeY = -1;
+        if (direction.equals(Direction.S) && area[probeY + 1][probeX] != null) {
+            System.out.println("Impossible to move to area");
+            return false;
+        }
+        probeY = probe.getPosition().getY();
+
+        if (probeX == planetX - 1) probeX = -1;
+        if (direction.equals(Direction.E) && area[probeY][probeX + 1] != null) {
+            System.out.println("Impossible to move");
+            return false;
+        }
+        probeX = probe.getPosition().getX();
+
+        if (probeX == 0) probeX = planetX;
+        if (direction.equals(Direction.W) && area[probeY][probeX - 1] != null) {
+            System.out.println("Impossible to move");
+            return false;
+        }
+        return true;
+    }
+
+    private void moveProbeForward(Probe probe) {
+        Direction direction = probe.getDirection();
+        int probeY = probe.getPosition().getY();
+        int probeX = probe.getPosition().getX();
+        int planetY = probe.getPlanet().getY();
+        int planetX = probe.getPlanet().getX();
+
+        CommandLineInterface.removeProbe(probe);
+        if (direction == Direction.N) {
+            if (probeY == 0)
+                probe.getPosition().setY(planetY - 1);
+            else
+                probe.getPosition().setY(probeY - 1);
+        }
+        if (direction == Direction.E) {
+            if (probeX == planetX - 1)
+                probe.getPosition().setX(0);
+            else
+                probe.getPosition().setX(probeX + 1);
+        }
+        if (direction == Direction.S) {
+            if (probeY == planetY - 1)
+                probe.getPosition().setY(0);
+            else
+                probe.getPosition().setY(probeY + 1);
+        }
+        if (direction == Direction.W) {
+            if (probeX == 0)
+                probe.getPosition().setX(planetX - 1);
+            else {
+                probe.getPosition().setX(probeX - 1);
+            }
+        }
+        CommandLineInterface.placeProbe(probe);
     }
 
     public static Probe takeSelectedProbe(String name, List<Probe> probeList) {
@@ -105,99 +179,4 @@ public class Probe {
         return actualProbe;
     }
 
-    public void placeProbe(Probe probe) {
-        probe.position = position;
-        probe.direction = direction;
-        Probe[][] areaTemp = planet.getArea();
-        areaTemp[position.getX()][position.getY()] = probe;
-        planet.setArea(areaTemp);
-    }
-
-    public Probe removeProbe(Probe probe, Position position) {
-        Probe probeTemp = planet.positionAreaIsFree(probe, position);
-        if (probeTemp == null) {
-            return null;
-        } else {
-            Probe[][] areaTemp = planet.getArea();
-            areaTemp[position.getY()][position.getX()] = null;
-            this.planet.setArea(areaTemp);
-            return probeTemp;
-        }
-    }
-
-    public boolean executeCommand(Probe probe) {
-        String[] command;
-        command = getCommands().split("");
-        setPosition(planet.transformCartesianPlaneToMatrix(position, planet.getY()));
-        placeProbe(probe);
-        for (int i = 0; i < commands.length(); i++) {
-            if (planet.positionAreaIsFree(probe, position) != null) {
-                System.out.println("has an obstacle at the probe's home position (" + getPosition().getX() + ", " + (getPosition().getY()) + ")");
-                return false;
-            }
-            if (command[i].equals("R"))
-                setDirection(moveRight());
-            if (command[i].equals("L"))
-                setDirection(moveLeft());
-            if (command[i].equals("M"))
-                   moveProbe(probe);
-        }
-        setPosition(planet.transformMatrixToCartesianPlane(position, planet.getY()));
-        return true;
-    }
-
-    private Direction moveRight() {
-        if (getDirection().toString().equals("N"))
-            return Direction.E;
-        if (getDirection().toString().equals("E"))
-            return Direction.S;
-        if (getDirection().toString().equals("S"))
-            return Direction.W;
-        if (getDirection().toString().equals("W"))
-            return Direction.N;
-        return null;
-    }
-
-    private Direction moveLeft() {
-        if (getDirection().toString().equals("N"))
-            return Direction.W;
-        if (getDirection().toString().equals("E"))
-            return Direction.N;
-        if (getDirection().toString().equals("S"))
-            return Direction.E;
-        if (getDirection().toString().equals("W"))
-            return Direction.S;
-        return null;
-    }
-
-    public void moveProbe(Probe probe) {
-        Position oldPosition = getPosition();
-        removeProbe(probe, oldPosition);
-        if (getDirection() == Direction.N) {
-            if (getPosition().getY() == 0)
-                setPosition(getPosition().getX(), (planet.getY() - 1));
-            else
-                setPosition(getPosition().getX(), (getPosition().getY() - 1));
-        }
-        if (getDirection() == Direction.E) {
-            if (getPosition().getX() == (planet.getX() - 1))
-                setPosition(0, getPosition().getY());
-            else
-                setPosition((getPosition().getX() + 1), getPosition().getY());
-        }
-        if (getDirection() == Direction.S) {
-            if (getPosition().getY() == (planet.getY() - 1))
-                setPosition(getPosition().getX(), 0);
-            else
-                setPosition(getPosition().getX(), (getPosition().getY() + 1));
-        }
-        if (getDirection() == Direction.W) {
-            if (getPosition().getX() == 0)
-                setPosition((planet.getX() - 1), getPosition().getY());
-            else {
-                setPosition((getPosition().getX() - 1), getPosition().getY());
-            }
-        }
-        placeProbe(probe);
-    }
 }

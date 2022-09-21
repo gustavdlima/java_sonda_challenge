@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Planet{
     private String name;
     private final int x;
@@ -14,7 +16,6 @@ public class Planet{
     public String getName() {
         return name;
     }
-
 
     public int getX() {
         return x;
@@ -47,10 +48,5 @@ public class Planet{
         return position;
     }
 
-    public Probe positionAreaIsFree (Probe probe, Position position) {
-        if (area[position.getY()][position.getX()] == probe || area[position.getY()][position.getX()] == null)
-            return null;
-        else
-            return area[position.getY()][position.getX()];
-    }
+
 }
