@@ -3,8 +3,8 @@ public class Position {
     private int x;
 
     public Position(int x, int y) {
-        this.y = y;
         this.x = x;
+        this.y = y;
     }
 
     public int getY() {

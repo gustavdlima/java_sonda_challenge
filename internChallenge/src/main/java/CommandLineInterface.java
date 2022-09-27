@@ -52,16 +52,6 @@ public class CommandLineInterface {
         return probe;
     }
 
-    public static Probe takeSelectedProbe(String name, List<Probe> probeList) {
-        Probe actualProbe = null;
-        for (int i = 0; i < probeList.size(); i++) {
-            if (probeList.get(i).getName().equals(name)) {
-                actualProbe = probeList.get(i);
-            }
-        }
-        return actualProbe;
-    }
-
     public static void removeProbe(Probe probe) {
         Position position = probe.getPosition();
         Probe[][] area = probe.getPlanet().getArea();
