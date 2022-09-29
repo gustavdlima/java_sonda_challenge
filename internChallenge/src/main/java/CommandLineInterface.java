@@ -49,6 +49,7 @@ public class CommandLineInterface {
         probe.setPosition(probe.getPlanet().transformCartesianPlaneToMatrix(probe.getPosition(), probe.getPlanet().getY()));
         placeProbe(probe);
         probe.setPosition(probe.getPlanet().transformMatrixToCartesianPlane(probe.getPosition(), probe.getPlanet().getY()));
+        System.out.println("- " + inputProbeName + "created -");
         return probe;
     }
 
@@ -72,7 +73,7 @@ public class CommandLineInterface {
 
     public void systemMenu() {
         System.out.println();
-        System.out.println("probe controller");
+        System.out.println("########### probe controller ###########");
         System.out.println();
         System.out.println("[alfa version]");
         System.out.println("https://github.com/gustavdlima/java_sonda_challenge.git");

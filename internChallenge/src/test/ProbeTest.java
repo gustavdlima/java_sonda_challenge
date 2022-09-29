@@ -6,9 +6,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProbeTest {
-
     @Test
-    void moveProbeToX3Y4(){
+    void moveProbeForward(){
         Probe testProbe = new Probe("test", new Planet("mars", 5, 5), new Position(3, 3), "LMRMM", Direction.N);
         testProbe.moveProbe("M", testProbe);
         System.out.println("(" + testProbe.getPosition() + ")");

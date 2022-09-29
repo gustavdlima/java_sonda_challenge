@@ -13,6 +13,7 @@ public class Main {
 
         CLI.systemMenu();
         while (true) {
+            System.out.print(": ");
             String option = sc.next();
             if (option.equals("-newplanet")) {
                 milkWay.newPlanet();
@@ -48,8 +49,8 @@ public class Main {
                     System.out.println("before start a probe you must choose a probe!");
                     continue ;
                 }
-                currentProbe.moveProbe(currentProbe.getCommands(), currentProbe);
                 System.out.println("probe started!");
+                currentProbe.moveProbe(currentProbe.getCommands(), currentProbe);
                 continue ;
             }
             if (option.equals("-newprobecommand")) {
